@@ -4,7 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -32,7 +33,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // this one does give values to the views which created in the layout file
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.MyViewHolder holder, int position) {
-
+        //TODO: make a for-loop
+        holder.createTextView(dataList.get(position).getField("ID"));
     }
 
     // this one does show how many views is there to show displayed
@@ -43,11 +45,33 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     // grab the views from layout file (layout.xml) almost like onCreate
     public static class MyViewHolder extends RecyclerView.ViewHolder{
+        private LinearLayout linearLayout;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            // grab id linearLayout from xml
+            linearLayout = itemView.findViewById(R.id.linearLayout);
         }
 
+        public void createTextView(String data) {
+            // grab context textview
+            TextView textView = new TextView(itemView.getContext());
+
+            // set text for the textView
+            textView.setText(data);
+
+            // create a width and height layout
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+
+            // then add the width and height layout to the textView
+            textView.setLayoutParams(layoutParams);
+
+            // Add the TextView to the linearLayout
+            linearLayout.addView(textView);
+        }
     }
 }
