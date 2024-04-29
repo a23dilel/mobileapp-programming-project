@@ -34,7 +34,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.MyViewHolder holder, int position) {
         //TODO: make a for-loop
+
+        holder.clearViews();
+
         holder.createTextView(dataList.get(position).getField("ID"));
+        holder.createTextView(dataList.get(position).getField("name"));
+        holder.createTextView(dataList.get(position).getField("type"));
+        holder.createTextView(dataList.get(position).getField("company"));
+        holder.createTextView(dataList.get(position).getField("location"));
+        holder.createTextView(dataList.get(position).getField("category"));
     }
 
     // this one does show how many views is there to show displayed
@@ -57,21 +65,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public void createTextView(String data) {
             // grab context textview
             TextView textView = new TextView(itemView.getContext());
-
             // set text for the textView
             textView.setText(data);
-
             // create a width and height layout
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
-
             // then add the width and height layout to the textView
             textView.setLayoutParams(layoutParams);
-
             // Add the TextView to the linearLayout
             linearLayout.addView(textView);
+        }
+
+        // remove existing views before adding new ones
+        public void clearViews() {
+            linearLayout.removeAllViews();
         }
     }
 }
