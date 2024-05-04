@@ -2,4 +2,5 @@
     <string name="app_name">Project</string>
     <string name="recycleView">RecycleView</string>
     <string name="enter_text_here">Enter text here to find specific data</string>
+    <string name="search">Search</string>
 </resources>
