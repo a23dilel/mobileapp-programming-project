@@ -2,6 +2,9 @@ package com.example.project;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +19,8 @@ import java.util.ArrayList;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class SecondActivity extends AppCompatActivity implements JsonTask.JsonTaskListener {
+    EditText editText;
+    private String filter;
     // Grab URL from API and store in a variable
     private final String JSON_URL = "https://mobprog.webug.se/json-api?login=a23dilel";
     @Override
@@ -23,8 +28,22 @@ public class SecondActivity extends AppCompatActivity implements JsonTask.JsonTa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
+        editText = findViewById(R.id.editText);
+        filter = editText.getText().toString();
+
         // JSONTask does checking if JSON_URL is validate, network and then active the function onPostExecute().
-        new JsonTask(this).execute(JSON_URL);
+        new JsonTask(SecondActivity.this).execute(JSON_URL);
+
+        Button searchButton = findViewById(R.id.searchButton);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                filter = editText.getText().toString();
+                // JSONTask does checking if JSON_URL is validate, network and then active the function onPostExecute().
+                new JsonTask(SecondActivity.this).execute(JSON_URL);
+            }
+        });
     }
 
     @Override
@@ -51,7 +70,7 @@ public class SecondActivity extends AppCompatActivity implements JsonTask.JsonTa
             RecyclerView recyclerView = findViewById(R.id.recycler_view);
 
             // Before showing data on the layout, must have an adapter which can bind data (mountains) and print out on the linear layout.
-            RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, dataList);
+            RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, dataList, filter);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
