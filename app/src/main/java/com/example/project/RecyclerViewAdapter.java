@@ -8,6 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,9 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
     private final Context context;
     private final ArrayList<Data> dataList;
-    public RecyclerViewAdapter(Context context, ArrayList<Data> dataList){
+
+    private String filter;
+    public RecyclerViewAdapter(Context context, ArrayList<Data> dataList, String filter){
         this.context = context;
         this.dataList = dataList;
+        this.filter = filter;
     }
 
     // This one does inflate the layout for example giving a look to our rows
@@ -37,12 +42,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         holder.clearViews();
 
-        holder.createTextView(dataList.get(position).getField("ID"));
-        holder.createTextView(dataList.get(position).getField("name"));
-        holder.createTextView(dataList.get(position).getField("type"));
-        holder.createTextView(dataList.get(position).getField("company"));
-        holder.createTextView(dataList.get(position).getField("location"));
-        holder.createTextView(dataList.get(position).getField("category"));
+        List<String> keys = dataList.get(position).getAllKeysInOrder();
+
+        for (String key : keys)
+        {
+            if (Objects.equals(filter, "ShowAll"))
+            {
+                holder.createTextView(dataList.get(position).getField(key));
+            }
+            else
+            {
+                if (key.equals(filter))
+                {
+                    holder.createTextView(dataList.get(position).getField(key));
+                }
+            }
+        }
     }
 
     // this one does show how many views is there to show displayed
