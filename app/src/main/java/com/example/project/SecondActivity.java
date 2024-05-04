@@ -1,5 +1,6 @@
 package com.example.project;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,9 @@ import java.util.ArrayList;
 public class SecondActivity extends AppCompatActivity implements JsonTask.JsonTaskListener {
     EditText editText;
     private String filter;
+    private SharedPreferences myPreferenceRef;
+    private SharedPreferences.Editor myPreferenceEditor;
+
     // Grab URL from API and store in a variable
     private final String JSON_URL = "https://mobprog.webug.se/json-api?login=a23dilel";
     @Override
@@ -28,22 +32,39 @@ public class SecondActivity extends AppCompatActivity implements JsonTask.JsonTa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
-        editText = findViewById(R.id.editText);
-        filter = editText.getText().toString();
-
-        // JSONTask does checking if JSON_URL is validate, network and then active the function onPostExecute().
-        new JsonTask(SecondActivity.this).execute(JSON_URL);
-
         Button searchButton = findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                // Grab string value from editText
                 filter = editText.getText().toString();
+
+                // add string value and commit.
+                myPreferenceEditor.putString("data1", filter);
+                myPreferenceEditor.commit();
+
                 // JSONTask does checking if JSON_URL is validate, network and then active the function onPostExecute().
                 new JsonTask(SecondActivity.this).execute(JSON_URL);
             }
         });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // editText grab "ShowAll" value
+        editText = findViewById(R.id.editText);
+        filter = editText.getText().toString();
+
+        myPreferenceRef = getSharedPreferences("preference", MODE_PRIVATE);
+        myPreferenceEditor = myPreferenceRef.edit();
+
+        // trying to find preference data and if data was found then set "ShowALL" value on editText.
+        editText.setText(myPreferenceRef.getString("data1", filter));
+
+        // JSONTask does checking if JSON_URL is validate, network and then active the function onPostExecute().
+        new JsonTask(SecondActivity.this).execute(JSON_URL);
     }
 
     @Override
@@ -70,7 +91,7 @@ public class SecondActivity extends AppCompatActivity implements JsonTask.JsonTa
             RecyclerView recyclerView = findViewById(R.id.recycler_view);
 
             // Before showing data on the layout, must have an adapter which can bind data (mountains) and print out on the linear layout.
-            RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, dataList, filter);
+            RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, dataList, myPreferenceRef.getString("data1", filter));
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
