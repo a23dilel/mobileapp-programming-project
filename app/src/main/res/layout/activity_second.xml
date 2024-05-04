@@ -12,6 +12,7 @@
         android:layout_height="48dp"
         android:layout_margin="25dp"
         android:hint="@string/enter_text_here"
+        android:text="@string/showall"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
