@@ -38,20 +38,26 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // this one does give values to the views which created in the layout file
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.MyViewHolder holder, int position) {
-        //TODO: make a for-loop
 
+        // when user scroll down or upp will clear all views
         holder.clearViews();
 
+        // get all keys
         List<String> keys = dataList.get(position).getAllKeysInOrder();
+        Intent intent = new Intent(context, );
 
+
+        // for-loop each key
         for (String key : keys)
         {
+            // if filter is same thing "ShowAll" then print all keys and values otherwise print specific key and value
             if (Objects.equals(filter, "ShowAll"))
             {
                 holder.createTextView(dataList.get(position).getField(key));
             }
             else
             {
+                // if filter same thing key then print key and value
                 if (key.equals(filter))
                 {
                     holder.createTextView(dataList.get(position).getField(key));
