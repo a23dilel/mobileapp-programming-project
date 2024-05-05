@@ -1,6 +1,7 @@
 package com.example.project;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.layout, parent, false);
-        return new MyViewHolder(view);
+        return new MyViewHolder(view, context, dataList);
     }
 
     // this one does give values to the views which created in the layout file
@@ -44,8 +45,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         // get all keys
         List<String> keys = dataList.get(position).getAllKeysInOrder();
-        Intent intent = new Intent(context, );
-
 
         // for-loop each key
         for (String key : keys)
@@ -53,14 +52,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             // if filter is same thing "ShowAll" then print all keys and values otherwise print specific key and value
             if (Objects.equals(filter, "ShowAll"))
             {
-                holder.createTextView(dataList.get(position).getField(key));
+                holder.createTextView(key);
             }
             else
             {
                 // if filter same thing key then print key and value
                 if (key.equals(filter))
                 {
-                    holder.createTextView(dataList.get(position).getField(key));
+                    holder.createTextView(key);
                 }
             }
         }
@@ -75,19 +74,36 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // grab the views from layout file (layout.xml) almost like onCreate
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         private LinearLayout linearLayout;
+        private Context context;
+        private ArrayList<Data> dataList;
+        private Intent intent;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView, Context context, ArrayList<Data> dataList) {
             super(itemView);
 
             // grab id linearLayout from xml
             linearLayout = itemView.findViewById(R.id.linearLayout);
+            // grab context from recyclerViewAdapter
+            this.context = context;
+
+            // grab dataList from recyclerViewAdapter
+            this.dataList = dataList;
+
+            // when startActivity starts will call ThirdActivity.class
+            intent = new Intent(context, ThirdActivity.class);
         }
 
-        public void createTextView(String data) {
-            // grab context textview
-            TextView textView = new TextView(itemView.getContext());
-            // set text for the textView
-            textView.setText(data);
+        public void createTextView(final String key) {
+
+            // grab context and store to textview
+            TextView textView = new TextView(context);
+
+            // set text for adding key and value
+            textView.setText(dataList.get(getAdapterPosition()).getField(key));
+
+            // store key and value to intent
+            intent.putExtra(key, dataList.get(getAdapterPosition()).getSpecificValue(key));
+
             // create a width and height layout
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
