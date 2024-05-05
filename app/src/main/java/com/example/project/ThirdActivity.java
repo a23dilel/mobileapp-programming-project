@@ -1,7 +1,9 @@
 package com.example.project;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -37,6 +39,46 @@ public class ThirdActivity extends AppCompatActivity {
             costValue += " kr";
             TextView costTextView = findViewById(R.id.costTextView);
             costTextView.setText(costValue);
+
+            // Get each value
+            String idValue = extras.getString("ID");
+            String typeValue = extras.getString("type");
+            String locationValue = extras.getString("location");
+            String categoryValue = extras.getString("category");
+            String sizeValue = extras.getString("size");
+
+            // Create TextViews for displaying specific information
+            createTextView("ID: " + idValue);
+            createTextView("Type: " + typeValue);
+            createTextView("Location: " + locationValue);
+            createTextView("Category: " + categoryValue);
+            createTextView("Size: " + sizeValue);
         }
+    }
+
+    public void createTextView(final String key) {
+
+        LinearLayout linearLayout = findViewById(R.id.linearLayout2);
+
+        // grab context textview
+        TextView textView = new TextView(this);
+
+        // Set key text from an intent extra to a TextView
+        textView.setText(key);
+
+        // set text to center
+        textView.setGravity(Gravity.CENTER);
+
+        // create a width and height layout
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        // then add the width and height layout to the textView
+        textView.setLayoutParams(layoutParams);
+
+        // Add the TextView to the linearLayout
+        linearLayout.addView(textView);
     }
 }
