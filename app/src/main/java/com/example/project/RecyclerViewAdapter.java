@@ -104,6 +104,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             // store key and value to intent
             intent.putExtra(key, dataList.get(getAdapterPosition()).getSpecificValue(key));
 
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    context.startActivity(intent);
+                }
+            });
+
             // create a width and height layout
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
