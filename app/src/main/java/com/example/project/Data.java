@@ -1,7 +1,5 @@
 package com.example.project;
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,7 +22,6 @@ public class Data {
             String key = object.names().getString(j);
             String value = object.get(key).toString();
 
-            Log.d("oooo", "KEY:" + key + " and value " + value);
             fields.put(key, value);
             keyOrder.add(key);
         }
@@ -33,6 +30,11 @@ public class Data {
     public String getField(String key)
     {
         return key + ": " + fields.get(key);
+    }
+
+    public String getSpecificValue(String key)
+    {
+        return fields.get(key);
     }
 
     public List<String> getAllKeysInOrder()
