@@ -40,7 +40,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.MyViewHolder holder, int position)
     {
-
+        holder.bindData(position);
     }
 
     @Override
