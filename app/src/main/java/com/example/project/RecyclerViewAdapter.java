@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,42 +35,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     // this one does give values to the views which created in the layout file
     @Override
-    public void onBindViewHolder(@NonNull RecyclerViewAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerViewAdapter.MyViewHolder holder, int position)
+    {
 
-        // when user scroll down or upp will clear all views
-        holder.clearViews();
-
-        // if filter is same thing "ShowAll" then print all keys and values otherwise print specific key and value
-        if (Objects.equals(filter, "ShowAll"))
-        {
-            // get all keys
-            List<String> keys = dataList.get(position).getAllKeysInOrder();
-
-            // for-loop each key
-            for (String key : keys)
-            {
-                String keyAndValue = dataList.get(position).getKeyAndValue(key);
-                holder.createTextView(keyAndValue);
-            }
-        }
-        else
-        {
-            // get all values
-            List<String> values = dataList.get(position).getAllValuesInOrder();
-
-            // for-loop each key
-            for (String value : values)
-            {
-                // for-loop each value
-                if (value.contains(filter))
-                {
-                    holder.createTextView(value);
-                }
-            }
-        }
     }
 
-    // this one does show how many views is there to show displayed
     @Override
     public int getItemCount() {
         return dataList.size();
@@ -90,6 +58,41 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             // when startActivity starts will call ThirdActivity.class
             intent = new Intent(context, ThirdActivity.class);
+        }
+
+        public void bindData(int position) {
+
+            // when user scroll down or upp will clear all views
+            linearLayout.removeAllViews();
+
+            // if filter is same thing "ShowAll" then print all keys and values otherwise print specific key and value
+            if (filter.equals("ShowAll"))
+            {
+                // get all keys
+                List<String> keys = dataList.get(position).getAllKeysInOrder();
+
+                // for-loop each key
+                for (String key : keys)
+                {
+                    String keyAndValue = dataList.get(position).getKeyAndValue(key);
+                    createTextView(keyAndValue);
+                }
+            }
+            else
+            {
+                // get all values
+                List<String> values = dataList.get(position).getAllValuesInOrder();
+
+                // for-loop each value
+                for (String value : values)
+                {
+                    // if value has almost same filter then create TextView
+                    if (value.contains(filter))
+                    {
+                        createTextView(value);
+                    }
+                }
+            }
         }
 
         public void createTextView(final String data) {
