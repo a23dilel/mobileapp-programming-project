@@ -18,9 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
     private final Context context;
     private final ArrayList<Data> dataList;
+    private final String filter;
 
-    private String filter;
-    public RecyclerViewAdapter(Context context, ArrayList<Data> dataList, String filter){
+    public RecyclerViewAdapter(Context context, ArrayList<Data> dataList, String filter) {
         this.context = context;
         this.dataList = dataList;
         this.filter = filter;
@@ -30,10 +30,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @NonNull
     @Override
     public RecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.layout, parent, false);
-        return new MyViewHolder(view, context, dataList);
+        View view = LayoutInflater.from(context).inflate(R.layout.layout, parent, false);
+        return new MyViewHolder(view);
     }
 
     // this one does give values to the views which created in the layout file
@@ -80,24 +78,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     // grab the views from layout file (layout.xml) almost like onCreate
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
-        private LinearLayout linearLayout;
-        private Context context;
-        private ArrayList<Data> dataList;
-        private Intent intent;
-        private TextView textView;
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        private final LinearLayout linearLayout;
+        private final Intent intent;
 
-        public MyViewHolder(@NonNull View itemView, Context context, ArrayList<Data> dataList) {
+        public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             // grab id linearLayout from xml
             linearLayout = itemView.findViewById(R.id.linearLayout);
-
-            // grab context from recyclerViewAdapter
-            this.context = context;
-
-            // grab dataList from recyclerViewAdapter
-            this.dataList = dataList;
 
             // when startActivity starts will call ThirdActivity.class
             intent = new Intent(context, ThirdActivity.class);
@@ -106,7 +95,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public void createTextView(final String data) {
 
             // grab context and store to textview
-            textView = new TextView(context);
+            TextView textView = new TextView(context);
 
             // set text for adding key and value
             textView.setText(data);
