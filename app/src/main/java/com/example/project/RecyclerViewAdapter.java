@@ -43,23 +43,31 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         // when user scroll down or upp will clear all views
         holder.clearViews();
 
-        // get all keys
-        List<String> keys = dataList.get(position).getAllKeysInOrder();
-
-        // for-loop each key
-        for (String key : keys)
+        // if filter is same thing "ShowAll" then print all keys and values otherwise print specific key and value
+        if (Objects.equals(filter, "ShowAll"))
         {
-            // if filter is same thing "ShowAll" then print all keys and values otherwise print specific key and value
-            if (Objects.equals(filter, "ShowAll"))
+            // get all keys
+            List<String> keys = dataList.get(position).getAllKeysInOrder();
+
+            // for-loop each key
+            for (String key : keys)
             {
-                holder.createTextView(key);
+                String keyAndValue = dataList.get(position).getKeyAndValue(key);
+                holder.createTextView(keyAndValue);
             }
-            else
+        }
+        else
+        {
+            // get all values
+            List<String> values = dataList.get(position).getAllValuesInOrder();
+
+            // for-loop each key
+            for (String value : values)
             {
-                // if filter same thing key then print key and value
-                if (key.equals(filter))
+                // for-loop each value
+                if (value.contains(filter))
                 {
-                    holder.createTextView(key);
+                    holder.createTextView(value);
                 }
             }
         }
@@ -77,12 +85,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         private Context context;
         private ArrayList<Data> dataList;
         private Intent intent;
+        private TextView textView;
 
         public MyViewHolder(@NonNull View itemView, Context context, ArrayList<Data> dataList) {
             super(itemView);
 
             // grab id linearLayout from xml
             linearLayout = itemView.findViewById(R.id.linearLayout);
+
             // grab context from recyclerViewAdapter
             this.context = context;
 
@@ -93,16 +103,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             intent = new Intent(context, ThirdActivity.class);
         }
 
-        public void createTextView(final String key) {
+        public void createTextView(final String data) {
 
             // grab context and store to textview
-            TextView textView = new TextView(context);
+            textView = new TextView(context);
 
             // set text for adding key and value
-            textView.setText(dataList.get(getAdapterPosition()).getField(key));
+            textView.setText(data);
 
             // store key and value to intent
-            intent.putExtra(key, dataList.get(getAdapterPosition()).getSpecificValue(key));
+            //intent.putExtra(key, dataList.get(getAdapterPosition()).getSpecificValue(key));
 
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
