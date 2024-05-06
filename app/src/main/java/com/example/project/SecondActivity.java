@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -70,36 +71,44 @@ public class SecondActivity extends AppCompatActivity implements JsonTask.JsonTa
     @Override
     public void onPostExecute(String json) {
 
-        // Check if JSON is not NULL
-        try {
+        // if json isn't null then run code normal otherwise print error message
+        if (json != null)
+        {
+            // Check if JSON is not NULL
+            try {
 
-            // Take JSON-data and turn into an array
-            JSONArray arr = new JSONArray(json);
+                // Take JSON-data and turn into an array
+                JSONArray arr = new JSONArray(json);
 
-            // Take a Data class which can hold of arrays
-            ArrayList<Data> dataList = new ArrayList<>();
+                // Take a Data class which can hold of arrays
+                ArrayList<Data> dataList = new ArrayList<>();
 
-            // Each object get string of specific name and add each name on constructor from data.
-            for (int i = 0; i < arr.length(); i++)
-            {
-                JSONObject object = arr.getJSONObject(i);
+                // Each object get string of specific name and add each name on constructor from data.
+                for (int i = 0; i < arr.length(); i++)
+                {
+                    JSONObject object = arr.getJSONObject(i);
 
-                dataList.add(new Data(object));
+                    dataList.add(new Data(object));
+                }
+
+                // RecyclerView grab recycler_view from activity_main.xml so att kan print data on the layout.
+                RecyclerView recyclerView = findViewById(R.id.recycler_view);
+
+                // Before showing data on the layout, must have an adapter which can bind data (mountains) and print out on the linear layout.
+                RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, dataList, myPreferenceRef.getString("data1", filter));
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+                // After that adapter send a message about data has changed.
+                adapter.notifyDataSetChanged();
+
+            } catch (JSONException e) {
+                Log.e("MainActivity==>","E:"+e.getMessage());
             }
-
-            // RecyclerView grab recycler_view from activity_main.xml so att kan print data on the layout.
-            RecyclerView recyclerView = findViewById(R.id.recycler_view);
-
-            // Before showing data on the layout, must have an adapter which can bind data (mountains) and print out on the linear layout.
-            RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, dataList, myPreferenceRef.getString("data1", filter));
-            recyclerView.setAdapter(adapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-            // After that adapter send a message about data has changed.
-            adapter.notifyDataSetChanged();
-
-        } catch (JSONException e) {
-            Log.e("MainActivity==>","E:"+e.getMessage());
+        }
+        else
+        {
+            Toast.makeText(this, "Failed to load json", Toast.LENGTH_SHORT).show();
         }
     }
 }
