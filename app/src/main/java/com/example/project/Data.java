@@ -12,10 +12,12 @@ import java.util.Map;
 public class Data {
     private Map<String, String> fields;
     private List<String> keyOrder;
+    private List<String> valueOrder;
 
     public Data(JSONObject object) throws JSONException {
         fields = new HashMap<>();
         keyOrder = new ArrayList<>();
+        valueOrder = new ArrayList<>();
 
         for (int j = 0; j < object.length(); j++)
         {
@@ -24,22 +26,25 @@ public class Data {
 
             fields.put(key, value);
             keyOrder.add(key);
+            valueOrder.add(value);
         }
     }
 
-    public String getField(String key)
+    public String getKeyAndValue(String key)
     {
         return key + ": " + fields.get(key);
     }
-
     public String getSpecificValue(String key)
     {
         return fields.get(key);
     }
-
     public List<String> getAllKeysInOrder()
     {
         return keyOrder;
+    }
+    public List<String> getAllValuesInOrder()
+    {
+        return valueOrder;
     }
 
     @Override
