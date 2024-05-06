@@ -14,12 +14,14 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>
+{
     private final Context context;
     private final ArrayList<Data> dataList;
     private final String filter;
 
-    public RecyclerViewAdapter(Context context, ArrayList<Data> dataList, String filter) {
+    public RecyclerViewAdapter(Context context, ArrayList<Data> dataList, String filter)
+    {
         this.context = context;
         this.dataList = dataList;
         this.filter = filter;
@@ -28,7 +30,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // This one does inflate the layout for example giving a look to our rows
     @NonNull
     @Override
-    public RecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
         View view = LayoutInflater.from(context).inflate(R.layout.layout, parent, false);
         return new MyViewHolder(view);
     }
@@ -41,16 +44,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return dataList.size();
     }
 
     // grab the views from layout file (layout.xml) almost like onCreate
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder
+    {
         private final LinearLayout linearLayout;
         private final Intent intent;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView)
+        {
             super(itemView);
 
             // grab id linearLayout from xml
@@ -60,8 +66,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             intent = new Intent(context, ThirdActivity.class);
         }
 
-        public void bindData(int position) {
-
+        public void bindData(int position)
+        {
             // when user scroll down or upp will clear all views
             linearLayout.removeAllViews();
 
@@ -95,7 +101,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             }
         }
 
-        public void createTextView(final String data) {
+        public void createTextView(final String data)
+        {
 
             // grab context and store to textview
             TextView textView = new TextView(context);
@@ -106,9 +113,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             // store key and value to intent
             //intent.putExtra(key, dataList.get(getAdapterPosition()).getSpecificValue(key));
 
-            textView.setOnClickListener(new View.OnClickListener() {
+            textView.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View view) {
+                public void onClick(View view)
+                {
 
                     context.startActivity(intent);
                 }
@@ -116,11 +125,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             // Add the TextView to the linearLayout
             linearLayout.addView(textView);
-        }
-
-        // remove existing views before adding new ones
-        public void clearViews() {
-            linearLayout.removeAllViews();
         }
     }
 }
