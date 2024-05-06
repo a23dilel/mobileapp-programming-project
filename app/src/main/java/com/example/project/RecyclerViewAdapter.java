@@ -122,13 +122,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 }
             });
 
-            // create a width and height layout
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-            // then add the width and height layout to the textView
-            textView.setLayoutParams(layoutParams);
             // Add the TextView to the linearLayout
             linearLayout.addView(textView);
         }
