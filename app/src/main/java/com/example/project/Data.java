@@ -1,5 +1,8 @@
 package com.example.project;
 
+import android.util.Log;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,27 +10,116 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @SuppressWarnings("WeakerAccess")
 public class Data {
-    private Map<String, String> fields;
-    private List<String> keyOrder;
-    private List<String> valueOrder;
+    private JSONArray jsonArray;
+    private List<JSONObject> jsonObjects = new ArrayList<>();
+    private List<String> keyOrder = new ArrayList<>();
+    private List<String> valueOrder = new ArrayList<>();
+    private Map<String, String> fields = new HashMap<>();
 
-    public Data(JSONObject object) throws JSONException {
-        fields = new HashMap<>();
-        keyOrder = new ArrayList<>();
-        valueOrder = new ArrayList<>();
+    public Data(String json) throws JSONException {
 
-        for (int j = 0; j < object.length(); j++)
+        // Take JSON-data and turn into an array
+        jsonArray = new JSONArray(json);
+
+        // Each object get string of specific name and add each name on constructor from data.
+        for (int i = 0; i < jsonArray.length(); i++)
         {
-            String key = object.names().getString(j);
-            String value = object.get(key).toString();
+            JSONObject object = jsonArray.getJSONObject(i);
+            jsonObjects.add(object);
 
-            fields.put(key, value);
-            keyOrder.add(key);
-            valueOrder.add(value);
+            for (int j = 0; j < object.length(); j++)
+            {
+                String key = object.names().getString(j);
+                String value = object.get(key).toString();
+
+                keyOrder.add(key);
+                valueOrder.add(value);
+                fields.put(key, value);
+            }
         }
+    }
+
+    public JSONArray getJSONArray()
+    {
+        return jsonArray;
+    }
+
+    public List<JSONObject> getJSONObjects()
+    {
+        return jsonObjects;
+    }
+
+    public String getEachKeyAndValue(int indexOfObject, String substring) throws JSONException {
+
+        StringBuilder keyAndValue = new StringBuilder();
+
+        if (indexOfObject >= 0 && indexOfObject < jsonObjects.size())
+        {
+            JSONObject object = jsonObjects.get(indexOfObject);
+
+            for (int i = 0; i < object.length(); i++)
+            {
+                String key = object.names().get(i).toString().trim().replace("\n", "");
+                String value = object.get(key).toString().trim().replace("\n", "");
+
+                // Check if the key contains the substring
+                if (Objects.equals(substring, "ShowAll") || value.contains(substring))
+                {
+                    // Append key-value pair to the keyAndValue string
+                    keyAndValue.append(key).append(": ").append(value).append("\n");
+                }
+            }
+        }
+
+        // Return the key-value pairs
+        return keyAndValue.toString();
+    }
+
+    public String getEachKey(int indexOfObject) throws JSONException {
+
+        StringBuilder keyStringBuilder = new StringBuilder();
+
+        if (indexOfObject >= 0 && indexOfObject < jsonObjects.size())
+        {
+            JSONObject object = jsonObjects.get(indexOfObject);
+
+            for (int i = 0; i < object.length(); i++)
+            {
+                String key = object.names().get(i).toString();
+
+                // Append key-value pair to the keyAndValue string
+                keyStringBuilder.append(key).append("\n");
+            }
+        }
+
+        // Return the key-value pairs
+        return keyStringBuilder.toString();
+    }
+
+    public String getEachValue(int indexOfObject) throws JSONException {
+
+        StringBuilder valueStringBuilder = new StringBuilder();
+
+        if (indexOfObject >= 0 && indexOfObject < jsonObjects.size())
+        {
+            JSONObject object = jsonObjects.get(indexOfObject);
+
+            for (int i = 0; i < object.length(); i++)
+            {
+                String key = object.names().get(i).toString();
+                String value = object.get(key).toString();
+
+                // Append key-value pair to the keyAndValue string
+                valueStringBuilder.append(value).append("\n");
+            }
+        }
+
+        // Return the key-value pairs
+        return valueStringBuilder.toString();
     }
 
     public String getKeyAndValue(String key)
