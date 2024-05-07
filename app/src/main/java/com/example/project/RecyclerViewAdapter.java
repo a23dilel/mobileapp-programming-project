@@ -79,23 +79,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             List<JSONObject> objects = dataList.get(position).getJSONObjects();
 
-            // if filter is same thing "ShowAll" then print all keys and values otherwise print specific key and value
-            if (filter.equals("ShowAll"))
+            for (int i = 0; i < objects.size(); i++)
             {
-                for (int i = 0; i < objects.size(); i++)
-                {
-                    createTextView(dataList.get(position).getEachKeyAndValue(i, filter));
-                }
-            }
-            else
-            {
-                for (int i = 0; i < objects.size(); i++)
-                {
-                    if (dataList.get(position).getEachValue(i).contains(filter))
-                    {
-                        createTextView(dataList.get(position).getEachKeyAndValue(i, filter));
-                    }
-                }
+                createTextView(dataList.get(position).getEachKeyAndValue(i, filter));
             }
         }
 
