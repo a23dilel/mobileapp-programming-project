@@ -77,19 +77,10 @@ public class SecondActivity extends AppCompatActivity implements JsonTask.JsonTa
             // Check if JSON is not NULL
             try {
 
-                // Take JSON-data and turn into an array
-                JSONArray arr = new JSONArray(json);
-
                 // Take a Data class which can hold of arrays
                 ArrayList<Data> dataList = new ArrayList<>();
 
-                // Each object get string of specific name and add each name on constructor from data.
-                for (int i = 0; i < arr.length(); i++)
-                {
-                    JSONObject object = arr.getJSONObject(i);
-
-                    dataList.add(new Data(object));
-                }
+                dataList.add(new Data(json));
 
                 // RecyclerView grab recycler_view from activity_main.xml so att kan print data on the layout.
                 RecyclerView recyclerView = findViewById(R.id.recycler_view);
