@@ -16,9 +16,6 @@ import java.util.Objects;
 public class Data {
     private JSONArray jsonArray;
     private List<JSONObject> jsonObjects = new ArrayList<>();
-    private List<String> keyOrder = new ArrayList<>();
-    private List<String> valueOrder = new ArrayList<>();
-    private Map<String, String> fields = new HashMap<>();
 
     public Data(String json) throws JSONException {
 
@@ -30,16 +27,6 @@ public class Data {
         {
             JSONObject object = jsonArray.getJSONObject(i);
             jsonObjects.add(object);
-
-            for (int j = 0; j < object.length(); j++)
-            {
-                String key = object.names().getString(j);
-                String value = object.get(key).toString();
-
-                keyOrder.add(key);
-                valueOrder.add(value);
-                fields.put(key, value);
-            }
         }
     }
 
@@ -120,29 +107,5 @@ public class Data {
 
         // Return the key-value pairs
         return valueStringBuilder.toString();
-    }
-
-    public String getKeyAndValue(String key)
-    {
-        return key + ": " + fields.get(key);
-    }
-    public String getSpecificValue(String key)
-    {
-        return fields.get(key);
-    }
-    public List<String> getAllKeysInOrder()
-    {
-        return keyOrder;
-    }
-    public List<String> getAllValuesInOrder()
-    {
-        return valueOrder;
-    }
-
-    @Override
-    public String toString() {
-        return "Data{" +
-                "fields=" + fields +
-                '}';
     }
 }
