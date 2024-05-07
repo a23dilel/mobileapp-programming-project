@@ -14,6 +14,9 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>
 {
     private final Context context;
@@ -40,7 +43,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.MyViewHolder holder, int position)
     {
-        holder.bindData(position);
+        try {
+            holder.bindData(position);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -66,36 +73,27 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             intent = new Intent(context, ThirdActivity.class);
         }
 
-        public void bindData(int position)
-        {
+        public void bindData(int position) throws JSONException {
             // when user scroll down or upp will clear all views
             linearLayout.removeAllViews();
+
+            List<JSONObject> objects = dataList.get(position).getJSONObjects();
 
             // if filter is same thing "ShowAll" then print all keys and values otherwise print specific key and value
             if (filter.equals("ShowAll"))
             {
-                // get all keys
-                List<String> keys = dataList.get(position).getAllKeysInOrder();
-
-                // for-loop each key
-                for (String key : keys)
+                for (int i = 0; i < objects.size(); i++)
                 {
-                    String keyAndValue = dataList.get(position).getKeyAndValue(key);
-                    createTextView(keyAndValue);
+                    createTextView(dataList.get(position).getEachKeyAndValue(i, filter));
                 }
             }
             else
             {
-                // get all values
-                List<String> values = dataList.get(position).getAllValuesInOrder();
-
-                // for-loop each value
-                for (String value : values)
+                for (int i = 0; i < objects.size(); i++)
                 {
-                    // if value has almost same filter then create TextView
-                    if (value.contains(filter))
+                    if (dataList.get(position).getEachValue(i).contains(filter))
                     {
-                        createTextView(value);
+                        createTextView(dataList.get(position).getEachKeyAndValue(i, filter));
                     }
                 }
             }
