@@ -65,28 +65,4 @@ public class Data {
         // Return the key-value pairs
         return keyAndValue.toString();
     }
-
-
-
-    public String getEachValue(int indexOfObject) throws JSONException {
-
-        StringBuilder valueStringBuilder = new StringBuilder();
-
-        if (indexOfObject >= 0 && indexOfObject < jsonObjects.size())
-        {
-            JSONObject object = jsonObjects.get(indexOfObject);
-
-            for (int i = 0; i < object.length(); i++)
-            {
-                String key = object.names().get(i).toString();
-                String value = object.get(key).toString();
-
-                // Append key-value pair to the keyAndValue string
-                valueStringBuilder.append(value).append("\n");
-            }
-        }
-
-        // Return the key-value pairs
-        return valueStringBuilder.toString();
-    }
 }
