@@ -112,7 +112,51 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     // Add the TextView to the linearLayout
                     linearLayout.addView(textView);
 
+                    textView.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View view)
+                        {
+                            // Get the text of the clicked TextView
+                            String clickedValue = textView.getText().toString();
 
+                            for (int i = 0; i < objects.size(); i++)
+                            {
+                                JSONObject object = objects.get(i);
+
+                                List<String> objectKeysAndValues = new ArrayList<>();
+                                for (int j = 0; j < object.length(); j++)
+                                {
+                                    try {
+                                        String key = object.names().get(j).toString();
+                                        String value = object.get(key).toString();
+                                        objectKeysAndValues.add(key + ": " + value);
+                                    } catch (JSONException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }
+
+                                if (objectKeysAndValues.contains(clickedValue))
+                                {
+                                    for (int j = 0; j < objectKeysAndValues.size(); j++)
+                                    {
+                                        String keyAndValue = objectKeysAndValues.get(j);
+                                        String[] parts = keyAndValue.split(": ", 2);
+
+                                        if (parts.length == 2) {
+                                            String key = parts[0];
+                                            String value = parts[1];
+
+                                            Log.d("hhhh", key + " " + value);
+
+                                            intent.putExtra(key, value);
+                                            context.startActivity(intent);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
                 }
             }
         }
