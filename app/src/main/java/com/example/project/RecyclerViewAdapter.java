@@ -2,6 +2,7 @@ package com.example.project;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -81,8 +83,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             createTextView(objects);
         }
 
-        public void createTextView(final String data)
+        public void createTextView(final List<JSONObject> objects) throws JSONException
         {
+            List<String> objectKeysAndValues = new ArrayList<>();
+            for (int i = 0; i < objects.size(); i++) {
+                JSONObject object = objects.get(i);
+
+                for (int j = 0; j < object.length(); j++) {
+                    String key = object.names().get(j).toString();
+                    String value = object.get(key).toString();
+                    objectKeysAndValues.add(key + ": " + value);
+                }
+            }
 
             // grab context and store to textview
             TextView textView = new TextView(context);
