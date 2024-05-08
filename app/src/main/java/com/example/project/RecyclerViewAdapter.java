@@ -150,9 +150,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                                             Log.d("hhhh", key + " " + value);
 
                                             intent.putExtra(key, value);
-                                            context.startActivity(intent);
                                         }
                                     }
+                                    context.startActivity(intent);
                                 }
                             }
                         }
