@@ -78,11 +78,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             linearLayout.removeAllViews();
 
             List<JSONObject> objects = dataList.get(position).getJSONObjects();
-
-            for (int i = 0; i < objects.size(); i++)
-            {
-                createTextView(dataList.get(position).getEachKeyAndValue(i, filter));
-            }
+            createTextView(objects);
         }
 
         public void createTextView(final String data)
