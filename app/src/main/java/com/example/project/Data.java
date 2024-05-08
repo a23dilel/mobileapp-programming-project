@@ -1,15 +1,11 @@
 package com.example.project;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @SuppressWarnings("WeakerAccess")
@@ -40,29 +36,35 @@ public class Data {
         return jsonObjects;
     }
 
-    public String getEachKeyAndValue(int indexOfObject, String substring) throws JSONException {
+    public String getEachKeyAndValue(String substring) throws JSONException {
 
-        StringBuilder keyAndValue = new StringBuilder();
+        StringBuilder resultKeyAndValue = new StringBuilder();
 
-        if (indexOfObject >= 0 && indexOfObject < jsonObjects.size())
+        for (int i = 0; i < jsonObjects.size(); i++)
         {
-            JSONObject object = jsonObjects.get(indexOfObject);
+            JSONObject object = jsonObjects.get(i);
 
-            for (int i = 0; i < object.length(); i++)
+            List<String> objectKeysAndValues = new ArrayList<>();
+            for (int j = 0; j < object.length(); j++) {
+                String key = object.names().get(j).toString();
+                String value = object.get(key).toString();
+                objectKeysAndValues.add(key + ": " + value);
+            }
+
+            // Check if the key contains the substring
+            if (Objects.equals(substring, "ShowAll"))
             {
-                String key = object.names().get(i).toString().trim().replace("\n", "");
-                String value = object.get(key).toString().trim().replace("\n", "");
-
-                // Check if the key contains the substring
-                if (Objects.equals(substring, "ShowAll") || value.contains(substring))
-                {
-                    // Append key-value pair to the keyAndValue string
-                    keyAndValue.append(key).append(": ").append(value).append("\n");
-                }
+                // Append key-value pair to the keyAndValue string
+                resultKeyAndValue.append(objectKeysAndValues).append("\n");
+            }
+            else if (objectKeysAndValues.contains(substring))
+            {
+                // Append key-value pair to the keyAndValue string
+                resultKeyAndValue.append(objectKeysAndValues).append("\n").append("\n");
             }
         }
 
         // Return the key-value pairs
-        return keyAndValue.toString();
+        return resultKeyAndValue.toString();
     }
 }
