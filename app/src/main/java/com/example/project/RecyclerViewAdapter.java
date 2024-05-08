@@ -96,27 +96,25 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 }
             }
 
-            // grab context and store to textview
-            TextView textView = new TextView(context);
-
-            // set text for adding key and value
-            textView.setText(data);
-
-            // store key and value to intent
-            //intent.putExtra(key, dataList.get(getAdapterPosition()).getSpecificValue(key));
-
-            textView.setOnClickListener(new View.OnClickListener()
+            for (int j = 0; j < objectKeysAndValues.size(); j++)
             {
-                @Override
-                public void onClick(View view)
+                final String keyAndValue = objectKeysAndValues.get(j);
+
+                // Check if the key contains the substring
+                if (Objects.equals(filter, "ShowAll") || keyAndValue.contains(filter))
                 {
+                    // grab context and store to textview
+                    final TextView textView = new TextView(context);
 
-                    context.startActivity(intent);
+                    // set text for adding key and value
+                    textView.setText(keyAndValue);
+
+                    // Add the TextView to the linearLayout
+                    linearLayout.addView(textView);
+
+
                 }
-            });
-
-            // Add the TextView to the linearLayout
-            linearLayout.addView(textView);
+            }
         }
     }
 }
