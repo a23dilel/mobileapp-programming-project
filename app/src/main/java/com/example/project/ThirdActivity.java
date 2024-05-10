@@ -42,7 +42,7 @@ public class ThirdActivity extends AppCompatActivity {
 
             // Get each value
             String idValue = extras.getString("ID");
-            String typeValue = extras.getString("type");
+            //String typeValue = extras.getString("type");
             String companyValue = extras.getString("company");
             String locationValue = extras.getString("location");
             String categoryValue = extras.getString("category");
@@ -50,7 +50,7 @@ public class ThirdActivity extends AppCompatActivity {
 
             // Create TextViews for displaying specific information
             createTextView("ID: " + idValue);
-            createTextView("Type: " + typeValue);
+            //createTextView("Type: " + typeValue);
             createTextView("Company: " + companyValue);
             createTextView("Location: " + locationValue);
             createTextView("Category: " + categoryValue);
