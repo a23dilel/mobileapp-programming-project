@@ -101,7 +101,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 final String keyAndValue = objectKeysAndValues.get(j);
 
                 // Check if the key contains the substring
-                if (Objects.equals(filter, "ShowAll") || keyAndValue.contains(filter))
+                if (filter.isEmpty() || keyAndValue.contains(filter))
                 {
                     // grab context and store to textview
                     final TextView textView = new TextView(context);
