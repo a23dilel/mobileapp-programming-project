@@ -22,6 +22,7 @@ public class Data {
         for (int i = 0; i < jsonArray.length(); i++)
         {
             JSONObject object = jsonArray.getJSONObject(i);
+            object.remove("type");
             jsonObjects.add(object);
         }
     }
