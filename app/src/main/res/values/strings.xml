@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Project</string>
     <string name="products">Products</string>
-    <string name="enter_text_here">Enter text here to find specific data</string>
+    <string name="write_text_here">Search for specific data. (Leave empty to show all.)</string>
     <string name="search">Search</string>
     <string name="title">Title</string>
     <string name="cost">Cost</string>
