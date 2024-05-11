@@ -109,6 +109,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     // set text for adding key and value
                     textView.setText(keyAndValue);
                     textView.setTextSize(25);
+                    textView.setPadding(0,0,0,20);
 
                     // Add the TextView to the linearLayout
                     linearLayout.addView(textView);
